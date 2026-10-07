@@ -1,0 +1,10 @@
+{
+  "name": "beat-motion-video",
+  "version": "1.0.0",
+  "description": "Beat-synced motion videos (launch clips, partnership announcements, product promos) rendered from HTML to MP4 with motion blur and a mastered mix.",
+  "author": { "name": "Gnyanendra Nath", "url": "https://github.com/gnyani" },
+  "homepage": "https://github.com/gnyani/beat-motion-video",
+  "repository": "https://github.com/gnyani/beat-motion-video",
+  "license": "MIT",
+  "keywords": ["video", "motion", "animation", "social", "ffmpeg", "playwright", "skill"]
+}

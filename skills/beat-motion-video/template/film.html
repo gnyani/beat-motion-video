@@ -1,0 +1,87 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family:Geist; src:url(assets/geist.woff2) format("woff2"); font-weight:100 900; }
+@font-face { font-family:Plex; src:url(assets/plex.woff2) format("woff2"); font-weight:400 600; }
+/* Brand tokens: change these first. */
+:root { --bg:#f4edd9; --paper:#fff8e9; --ink:#29273e; --muted:#625969; --accent:#376d57; --pop:#f08e78; --gold:#e5c774; --mint:#9bd6b5; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { width:1080px; height:1350px; overflow:hidden; background:var(--bg); }
+body { font-family:Geist,sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
+#stage { position:relative; width:1080px; height:1350px; overflow:hidden; background:radial-gradient(ellipse 75% 60% at 50% 52%,#fffaf0 0%,#f8f1e1 55%,#f0e6cf 100%); }
+#cam { position:absolute; inset:0; transform-origin:540px 700px; }
+.abs { position:absolute; }
+.center { left:0; width:1080px; text-align:center; }
+.mono { font-family:Plex,monospace; font-weight:500; text-transform:uppercase; letter-spacing:.16em; }
+.heavy { font-weight:900; font-style:italic; letter-spacing:-.06em; }
+.popText { color:var(--pop); -webkit-text-stroke:3px var(--ink); paint-order:stroke fill; text-shadow:5px 7px 0 var(--ink); }
+/* Text reveals: an inner span slides inside an overflow mask (see maskY in scene.js). */
+.mask { display:block; overflow:hidden; padding:0 .12em .16em; margin:0 -.12em -.16em; }
+.mask > span { display:block; will-change:transform; }
+
+/* Brand lockup (swap the mark for the real logo <img>) */
+.lockup { display:inline-flex; align-items:center; gap:.3em; font:800 64px/1 Geist,sans-serif; letter-spacing:-.04em; }
+.mark { width:1em; height:1em; border-radius:.24em; background:var(--ink); display:grid; grid-template-columns:repeat(2,1fr); gap:.1em; padding:.2em; }
+.mark i { border-radius:50%; background:var(--mint); } .mark i:last-child { background:var(--pop); }
+
+/* Product window (replace .shot contents with a real screenshot <img>) */
+#product { position:absolute; left:90px; top:420px; width:900px; height:600px; background:#fff; border:3px solid var(--ink); border-radius:24px; box-shadow:9px 12px 0 var(--ink); overflow:hidden; }
+#product .bar { height:46px; background:#f4f1ea; border-bottom:2px solid #29273e22; display:flex; align-items:center; gap:9px; padding:0 18px; }
+#product .bar i { width:12px; height:12px; border-radius:50%; background:#d9d2c3; }
+#product .bar span { margin:0 auto; font:500 17px/1 Plex,monospace; color:var(--muted); letter-spacing:.06em; }
+#product .shot { position:absolute; inset:46px 0 0; padding:44px 48px; transform-origin:60% 50%; }
+.line { height:18px; border-radius:9px; background:#ece6d8; margin-bottom:18px; }
+
+/* Offer ticket */
+#ticket { position:absolute; left:190px; top:640px; width:700px; height:230px; background:var(--paper); border:4px solid var(--ink); border-radius:26px; box-shadow:8px 11px 0 var(--ink); overflow:hidden; transform-origin:350px 115px; }
+#ticket::before { content:""; position:absolute; left:0; top:0; bottom:0; width:14px; background:var(--accent); }
+#ticket .name { position:absolute; left:48px; top:40px; font:800 56px/1 Geist,sans-serif; letter-spacing:-.03em; }
+#ticket .terms { position:absolute; left:48px; right:30px; bottom:26px; display:flex; justify-content:space-between; align-items:center; font:600 26px/1 Plex,monospace; letter-spacing:.14em; text-transform:uppercase; }
+#ticket .free { font:900 italic 54px/1 Geist,sans-serif; letter-spacing:-.04em; text-transform:none; background:var(--pop); border:3px solid var(--ink); border-radius:14px; padding:8px 20px 12px; box-shadow:3px 4px 0 var(--ink); transform:rotate(-5deg); }
+.burst { position:absolute; width:70px; height:70px; }
+
+/* Steps */
+.step { position:absolute; left:170px; height:118px; display:flex; align-items:center; gap:30px; }
+.step .n { flex:none; width:84px; height:84px; border-radius:50%; background:var(--paper); border:4px solid var(--ink); box-shadow:4px 6px 0 var(--ink); display:flex; align-items:center; justify-content:center; font:900 44px/1 Geist,sans-serif; }
+.step .n.done { background:var(--mint); }
+.step .t { font-size:66px; line-height:1; white-space:nowrap; }
+
+/* End card */
+#cta { position:absolute; display:flex; align-items:center; gap:18px; padding:26px 40px; background:var(--accent); color:#fff; border:4px solid var(--ink); border-radius:22px; font:800 52px/1 Geist,sans-serif; letter-spacing:-.02em; white-space:nowrap; }
+</style></head>
+<body>
+<div id="stage"><div id="cam">
+
+  <!-- 1. Title card: complete at frame 0 (it is the thumbnail) -->
+  <div class="abs center mono" style="top:300px;font-size:30px;color:var(--accent)"><span class="mask"><span id="hK">Launch week · 12–16 October</span></span></div>
+  <div class="abs center heavy" style="top:400px;font-size:148px;line-height:.95"><span class="mask"><span id="h1">Your big</span></span></div>
+  <div class="abs center heavy popText" style="top:545px;font-size:148px;line-height:.95"><span class="mask"><span id="h2">headline.</span></span></div>
+  <div class="abs center" style="top:760px;font-size:44px;color:var(--muted)"><span class="mask"><span id="hS">One short line that sets it up.</span></span></div>
+
+  <!-- 2. Product -->
+  <div class="abs center mono" style="top:230px;font-size:28px;color:var(--accent)"><span class="mask"><span id="pK">Meet the product</span></span></div>
+  <div class="abs center heavy" style="top:290px;font-size:76px"><span class="mask"><span id="p1">What it does, in five words.</span></span></div>
+  <div id="product"><div class="bar"><i></i><i></i><i></i><span>example.com</span></div>
+    <div class="shot"><div class="line" style="width:46%;height:30px;background:#29273e"></div><div class="line" style="width:88%"></div><div class="line" style="width:80%"></div><div class="line" style="width:84%"></div><div class="line" style="width:52%"></div><div class="line" style="width:34%;height:30px;margin-top:40px;background:var(--mint)"></div><div class="line" style="width:76%"></div><div class="line" style="width:70%"></div></div></div>
+
+  <!-- 3. Offer -->
+  <div class="abs center heavy" style="top:300px;font-size:92px"><span class="mask"><span id="o1">Everyone who joins gets</span></span></div>
+  <div class="abs center heavy popText" style="top:410px;font-size:110px"><span class="mask"><span id="o2">a free month.</span></span></div>
+  <div id="ticket"><div class="name">Product Pro</div><div class="terms"><span>1 month</span><span class="free">Free</span></div></div>
+  <div id="bursts"></div>
+
+  <!-- 4. Steps -->
+  <div class="abs center mono" style="top:300px;font-size:30px;color:var(--accent)"><span class="mask"><span id="sK">How to join</span></span></div>
+  <div class="step" id="st0"><div class="n">1</div><div class="t"><span class="mask"><span>Sign up</span></span></div></div>
+  <div class="step" id="st1"><div class="n">2</div><div class="t"><span class="mask"><span>Play once</span></span></div></div>
+  <div class="step" id="st2"><div class="n">3</div><div class="t"><span class="mask"><span>Claim it</span></span></div></div>
+
+  <!-- 5. End card -->
+  <div class="abs center" style="top:390px"><span id="lockup" class="lockup"><span class="mark"><i></i><i></i><i></i><i></i></span>Brand</span></div>
+  <div class="abs center heavy" style="top:530px;font-size:110px"><span class="mask"><span id="e1">12–16 October</span></span></div>
+  <div class="abs center mono" style="top:670px;font-size:28px;color:var(--muted)"><span class="mask"><span id="e2">Open all day · Monday–Friday</span></span></div>
+  <div id="cta"><span>example.com/start</span><span style="font-size:40px">↗</span></div>
+
+</div></div>
+<script src="scene.js"></script>
+</body></html>

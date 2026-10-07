@@ -1,0 +1,9 @@
+{
+  "width": 1080,
+  "height": 1350,
+  "fps": 60,
+  "bpm": 110,
+  "leadBeats": 2,
+  "end": 10.8,
+  "music": { "file": "", "offset": 0, "fadeOut": 0.5 }
+}
